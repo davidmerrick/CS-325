@@ -11,11 +11,11 @@ void print_array(int *array, int size);
 
 int main()
 {
-	int array1_size = 4;
-	int array2_size = 5;
+	int array1_size = 3;
+	int array2_size = 3;
 	
-	int array1[] = {-3,-1,0,0};
-	int array2[] = {0,0,1,3,0};
+	int array1[] = {1,3,5};
+	int array2[] = {2,4,6};
 
 	//Compute sum arrays
 	int *sumarray1 = compute_sum_array(array1, array1_size);
@@ -24,15 +24,14 @@ int main()
 	//Find the smallest sum
 	int smallestsum = sumarray1[0] + sumarray2[0];
 	int tempsum;
-	int j = 0; //index for sumarray 2
 	for(int i = 1; i < array1_size; i++){
-		tempsum = sumarray1[i] + sumarray2[j];
-		if(abs(tempsum) < abs(smallestsum)){
-			smallestsum = tempsum;
+		for(int j = 0; j < array2_size; j++){
+			tempsum = sumarray1[i] + sumarray2[j];
+			if(abs(tempsum) < abs(smallestsum)){
+				smallestsum = tempsum;
+			}
 		}
-		j++;
 	}
-	
 	printf("Smallest sum is %d\n", smallestsum);
 }
 
