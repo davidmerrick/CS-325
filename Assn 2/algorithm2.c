@@ -1,6 +1,6 @@
 /* Assignment 2 - Algorithm 1: Enumeration for Sum of Suffices.
  * Loop over every pair s and t and compute the sum, keeping the sum closest to zero
- * Group members: David Merrick, Nick A, Taylor Friesen
+ * Group members: David Merrick, Nick Jordan, Taylor Friesen
  */
 
 #include <stdio.h>
@@ -28,8 +28,8 @@ int array1_size = 4;
 int array2_size = 4;
 
 int main(){	
-	int array1[] = {-3,2,-1,-3};
-	int array2[] = {1,2,3,3};
+	int array1[] = {1,-2,-4,3};
+	int array2[] = {6,-5,1,4};
 
 	int totalsize = array1_size + array2_size;
 
@@ -171,6 +171,8 @@ void merge(arraymeta numbers[], arraymeta temp[], int left, int mid, int right){
 
 	  for (i=0; i <= num_elements; i++){
 	  	numbers[right].value = temp[right].value;
+		numbers[right].parent_array = temp[right].parent_array;
+		numbers[right].position = temp[right].position;
 	    //Todo: is this necessary?
 		temp[tmp_pos].parent_array = numbers[right].parent_array;
 		temp[tmp_pos].position = numbers[right].position;
