@@ -67,20 +67,37 @@ int main(){
 		i++;
 	}
 	if(sumarray[i].parent_array != sumarray[i+1].parent_array){
-		smallestdiff.value = abs(sumarray[i].value) - abs(sumarray[i+1].value);
+		//Correct the value
+		if(sumarray[i].parent_array == 2){
+			sumarray[i].value = -sumarray[i].value;
+		}
+		if(sumarray[i+1].parent_array == 2){
+			sumarray[i+1].value = -sumarray[i+1].value;
+		}
+		smallestdiff.value = sumarray[i].value + sumarray[i+1].value;
 		smallestdiff.lower_bound = sumarray[i].value;
 		smallestdiff.upper_bound = sumarray[i+1].value;
 	}
 	for(i; i < totalsize; i++){
-		tempdiff.value = abs(sumarray[i].value) - abs(sumarray[i+1].value);
-		if(abs(tempdiff.value) < abs(smallestdiff.value)){
-			smallestdiff.value = tempdiff.value;
-			smallestdiff.lower_bound = sumarray[i].value;
-			smallestdiff.upper_bound = sumarray[i+1].value;
+		if(sumarray[i].parent_array != sumarray[i+1].parent_array){
+			//Correct the value
+			if(sumarray[i].parent_array == 2){
+				sumarray[i].value = -sumarray[i].value;
+			}
+			if(sumarray[i+1].parent_array == 2){
+				sumarray[i+1].value = -sumarray[i+1].value;
+			}
+			//Add and compare
+			tempdiff.value = sumarray[i].value + sumarray[i+1].value;
+			if(abs(tempdiff.value) < abs(smallestdiff.value)){
+				smallestdiff.value = tempdiff.value;
+				smallestdiff.lower_bound = sumarray[i].value;
+				smallestdiff.upper_bound = sumarray[i+1].value;
+			}
 		}
 	}
 
-	printf("Smallest diff is %d, found between %d and %d\n", smallestdiff.value, smallestdiff.lower_bound, smallestdiff.upper_bound);
+	printf("Smallest sum is %d, found between %d and %d\n", smallestdiff.value, smallestdiff.lower_bound, smallestdiff.upper_bound);
 }
 
 int *compute_sum_array(int *array, int size){
@@ -173,9 +190,6 @@ void merge(arraymeta numbers[], arraymeta temp[], int left, int mid, int right){
 	  	numbers[right].value = temp[right].value;
 		numbers[right].parent_array = temp[right].parent_array;
 		numbers[right].position = temp[right].position;
-	    //Todo: is this necessary?
-		temp[tmp_pos].parent_array = numbers[right].parent_array;
-		temp[tmp_pos].position = numbers[right].position;
 	    right = right - 1;
 	  }
 }
