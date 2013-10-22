@@ -1,5 +1,5 @@
-/* Assignment 2 - Algorithm 1: Enumeration for Sum of Suffices.
- * Loop over every pair s and t and compute the sum, keeping the sum closest to zero
+/* Assignment 2 - Algorithm 3: Divide and Conquer using Enumeration for Sum of Suffices.
+ * Using divide and conquer to test the last case of a suffix from the first half and a prefix from the second half
  * Group members: David Merrick, Nick A, Taylor Friesen
  */
 
@@ -16,7 +16,14 @@ int main()
 	
 	int array1[] = {1,-3,5,-7};
 	int array2[] = {-2,4,-6,8};
-	
+	int array2rev[array2_size];
+
+
+	for(int t=1; t<=array2_size; t++){
+	  array2rev[t-1] = array2[array2_size-t];
+	  printf("%d\n",array2rev[t-1]);
+	}
+
 	//Compute sum arrays
 	int *sumarray1 = compute_sum_array(array1, array1_size);
 	int *sumarray2 = compute_sum_array(array2, array2_size);
