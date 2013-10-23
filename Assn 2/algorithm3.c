@@ -8,25 +8,38 @@
 
 int *compute_sum_array(int *array, int size);
 void print_array(int *array, int size);
+int enumerate(int *array, int size);
 
-int main()
-{
-	int array1_size = 4;
-	int array2_size = 4;
+int main(){
+	int size = 8;
+	int array[] = {1,2,3,4,5,6,7,8};
+	int smallestsum = enumerate(array, size);	
+	printf("Smallest sum is %d\n", smallestsum);
+}
+
+int enumerate(int *array, int size){
+	int array1_size = size/2;
+	int array1[array1_size];
+	for(int i = 0; i < size/2; i++){
+		array1[i] = array[i];
+	}
+	int j = 0;
+	int array2_size = size - size/2;
+	int array2[array2_size];
+	for(int i = size/2; i < size; i++){
+		array2[j] = array[i];
+		j++;
+	}
 	
-	int array1[] = {1,-3,5,-7};
-	int array2[] = {-2,4,-6,8};
 	int array2rev[array2_size];
-
 
 	for(int t=1; t<=array2_size; t++){
 	  array2rev[t-1] = array2[array2_size-t];
-	  printf("%d\n",array2rev[t-1]);
 	}
 
 	//Compute sum arrays
 	int *sumarray1 = compute_sum_array(array1, array1_size);
-	int *sumarray2 = compute_sum_array(array2, array2_size);
+	int *sumarray2 = compute_sum_array(array2rev, array2_size);
 	
 	//Find the smallest sum
 	int smallestsum = sumarray1[0] + sumarray2[0];
@@ -39,7 +52,7 @@ int main()
 			}
 		}
 	}
-	printf("Smallest sum is %d\n", smallestsum);
+	return smallestsum;
 }
 
 int *compute_sum_array(int *array, int size){
