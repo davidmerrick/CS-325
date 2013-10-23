@@ -22,6 +22,7 @@ void print_array(int *array, int size);
 void merge(arraymeta numbers[], arraymeta temp[], int left, int mid, int right);
 void m_sort(arraymeta numbers[], arraymeta temp[], int left, int right);
 void mergeSort(arraymeta numbers[], arraymeta temp[], int array_size);
+int compare_sort(int *array1, int *array2);
 
 int array1_size = 4;
 int array2_size = 4;
@@ -30,6 +31,12 @@ int main(){
 	int array1[] = {1,-3,5,-7};
 	int array2[] = {-2,4,-6,8};
 
+	int smallestsum = compare_sort(array1, array2);
+
+	printf("Smallest sum is %d\n", smallestsum);
+}
+
+int compare_sort(int *array1, int *array2){
 	int totalsize = array1_size + array2_size;
 
 	//Compute sum arrays
@@ -93,8 +100,7 @@ int main(){
 			}
 		}
 	}
-
-	printf("Smallest sum is %d, found between %d and %d\n", smallestdiff.value, smallestdiff.lower_bound, smallestdiff.upper_bound);
+	return smallestdiff.value;
 }
 
 int *compute_sum_array(int *array, int size){
