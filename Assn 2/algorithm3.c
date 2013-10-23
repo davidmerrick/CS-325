@@ -9,12 +9,49 @@
 int *compute_sum_array(int *array, int size);
 void print_array(int *array, int size);
 int enumerate(int *array, int size);
+int recurse(int *array, int size);
+int lesser_of(int a, int b);
 
 int main(){
 	int size = 8;
 	int array[] = {1,2,3,4,5,6,7,8};
-	int smallestsum = enumerate(array, size);	
+	int smallestsum = recurse(array, size);	
 	printf("Smallest sum is %d\n", smallestsum);
+}
+
+int recurse(int *array, int size){
+	//Returns the smallest sum recursively
+	if(size == 1){
+		return array[0];
+	} else if(size == 2){
+		return lesser_of(array[0], array[1]);
+	} else if(size == 3 || size == 4){
+		return enumerate(array, size);
+	} else {
+		//Split the array
+		int array1_size = size/2;
+		int array1[array1_size];
+		for(int i = 0; i < size/2; i++){
+			array1[i] = array[i];
+		}
+		int j = 0;
+		int array2_size = size - size/2;
+		int array2[array2_size];
+		for(int i = size/2; i < size; i++){
+			array2[j] = array[i];
+			j++;
+		}
+		return lesser_of(recurse(array1, array1_size), recurse(array2, array2_size));
+	}
+}
+
+int lesser_of(int a, int b){
+	if(a < b){
+		return a;
+	} else {
+		return b;
+	}
+	
 }
 
 int enumerate(int *array, int size){
