@@ -24,7 +24,7 @@ int main(){
 	int total = 0;
 	printf("Elapsed time, input size\n");
 
-	for(input_size = 100; input_size <= 1000; input_size += 100){
+	for(input_size = 1000; input_size <= 100000; input_size += 10000){
 	            //Initialize array
 	                myarr = (int *) malloc(input_size * sizeof(int));
 	            for (x = 0; x < input_size; x++){
@@ -42,9 +42,6 @@ int main(){
 	        }
 	
 	printf("printing this to get the compiler to not optimize it out %d\n", total);
-
-
-
 }
 
 //returns random positive or negative integer
