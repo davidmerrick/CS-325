@@ -17,7 +17,7 @@ int main(){
 
 void changegreedy(int* O, int *V, int C, int size){
   for (int i = size; i>=0; i--){
-    while (V[i] < C){
+    while (V[i] <= C){
       C = C - V[i];
       O[i]++;
     }
