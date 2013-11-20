@@ -1,28 +1,22 @@
-
-
 from pulp import *
 
 import math
 
 import csv
 
-d = [1] #days
-T = [1] #average temps
+d = [] #days
+T = [] #average temps
 
-test = [] #test extracting of data
 
 with open('Corvallis.csv', 'rb') as f:
     reader = csv.reader(f, delimiter=';')
     for row in reader:
-	    #T.append(row[7])
-	    #d.append(row[8])
-	    curr_data = row[7].strip()
-	    if(not curr_data.isalpha()):
-	    	test.append(float(curr_data))
-
-print test
-
-
+            avg = row[7].strip()
+            if(not avg.isalpha()):
+                    T.append(float(avg))
+            day = row[8].strip()
+            if(not day.isalpha()):
+                    d.append(float(day))
 
 n = len(d)
 
@@ -57,11 +51,11 @@ for i in range(0,n):
 	prob += Z >= -(lin + seas + sol - T[i])
 
 
-# status = prob.solve()
-# print value(prob.objective)
-# print "value of x0: " + str(value(x0))
-# print "value of x1: " + str(value(x1))
-# print "value of x2: " + str(value(x2))
-# print "value of x3: " + str(value(x3))
-# print "value of x4: " + str(value(x4))
-# print "value of x5: " + str(value(x5))
+status = prob.solve()
+print value(prob.objective)
+print "value of x0: " + str(value(x0))
+print "value of x1: " + str(value(x1))
+print "value of x2: " + str(value(x2))
+print "value of x3: " + str(value(x3))
+print "value of x4: " + str(value(x4))
+print "value of x5: " + str(value(x5))
