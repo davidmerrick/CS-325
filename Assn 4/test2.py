@@ -1,5 +1,6 @@
 from pulp import *
 
+#Data set
 xs = [1, 2, 3, 5, 7, 8, 10]
 ys = [3, 5, 7, 11, 14, 15, 19]
 
