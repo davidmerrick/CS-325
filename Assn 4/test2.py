@@ -7,9 +7,6 @@ def find_slope(x1, y1, x2, y2):
 xs = [1, 2, 3, 5, 7, 8, 10]
 ys = [3, 5, 7, 11, 14, 15, 19]
 
-#Initialize LpProblem stuff
-
-
 #Find max and min slopes to put a bound on a
 min_slope = max_slope = find_slope(xs[0], ys[0], xs[1], ys[1])
 n = len(xs)
@@ -22,22 +19,24 @@ for i in range(1, n):
                         max_slope = slope
 
 
-for i in range(1, n):
+#Initialize LpProblem
+prob = LpProblem("Best Fit Line Problem", LpMinimize)
 
-    prob = LpProblem("Best Fit Line Problem", LpMaximize)
-    a = LpVariable("a", 0)
-    b = LpVariable("b",0)
-    prob += a * xs[i] + b - ys[i]
-    status = prob.solve()
-    print value(prob.objective)
-    print "value of a: " + str(value(a))
-    print "value of b: " + str(value(b))
+#Set constraints of decision variables
+a = LpVariable("a",min_slope,max_slope)
+b = LpVariable("b",0)
+Z = LpVariable("Z",0)
 
+#Want to minimize this
+prob+=Z
 
-
-
-
-print "Min possible slope: " + str(min_slope)
-print "Max possible slope: " + str(max_slope)
+#Want to get the maximum deviation
+for i in range(0,n):
+	prob += Z >= -(a * xs[i] + b - ys[i])
+	prob += Z >= (a * xs[i] + b - ys[i])
 
 
+status = prob.solve()
+print value(prob.objective)
+print "value of a: " + str(value(a))
+print "value of b: " + str(value(b))
