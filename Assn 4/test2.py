@@ -3,11 +3,13 @@ from pulp import *
 xs = [1, 2, 3, 5, 7, 8, 10]
 ys = [3, 5, 7, 11, 14, 15, 19]
 
+n = len(xs)
+
 #Initialize LpProblem
 prob = LpProblem("Best Fit Line Problem", LpMinimize)
 
 #Set constraints of decision variables
-a = LpVariable("a",0,0)
+a = LpVariable("a",0)
 b = LpVariable("b",0)
 Z = LpVariable("Z",0)
 

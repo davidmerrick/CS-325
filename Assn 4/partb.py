@@ -2,12 +2,26 @@ from pulp import *
 
 import math
 
-#put the actual data here
-d = [1, 2, 3, 6, 8, 9]
-T = [1, 2, 3, 4, 7, 8] 
+import csv
+
+d = [1] #days
+T = [1] #average temps
+
+test = [] #test extracting of data
+
+with open('Corvallis.csv', 'rb') as f:
+    reader = csv.reader(f, delimiter=';')
+    for row in reader:
+	    #T.append(row[7])
+	    #d.append(row[8])
+	    test.append(row[7].strip())
+
+	    
+print test
+
+
 
 n = len(d)
-
 
 #Initialize LpProblem
 prob = LpProblem("Best Fit Line Problem", LpMinimize)
