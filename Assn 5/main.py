@@ -18,26 +18,36 @@ from operator import attrgetter
 Point = namedtuple('Point', 'index x y visited')
 pointlist = [] #create named tuple to store points and their coordinates
 
-
 def find_distance(x1, y1, x2, y2):
 	return ((x2-x1)**2 + (y2-y1)**2)**(.5)
 
+def mark_visited(pointlist, point):
+	#Marks a point as visited
+	for i in pointlist:
+		if i.index == point.index:
+			i = i._replace(visited = 1)
+			break
+	return pointlist
+
+def visited(point):
+	#A boolean that returns true if point has been visited
+	if point.visited == 0:
+		return false
+	return true
+
 def get_nextclosest_x(pointlist, point):
-	print "point index = " + str(point.index)
 	#returns a point corresponding to the next closest unvisited X point
 	pointlist = sorted(pointlist, key=attrgetter('x'))
 	#Loop through the array until we find our current point
 	for i in pointlist:
-		#To do: not sure how to compare these namedtuple objects
 		if i.index == point.index:
 			break
 	return i
-
 
 with open('example-input-1.txt', 'rb') as f:
 	reader = csv.reader(f, delimiter=' ')
 	for row in reader:
 		pointlist.append(Point(row[0], row[1], row[2], 0));
  
-print "Original point is " + str(pointlist[5])
-print "point that it found is " + str(get_nextclosest_x(pointlist, pointlist[5]))
+pointlist = mark_visited(pointlist, pointlist[0])
+print pointlist 
