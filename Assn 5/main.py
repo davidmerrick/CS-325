@@ -41,10 +41,16 @@ def get_nextclosest_x(pointlist, point):
 	#returns a point corresponding to the next closest unvisited X point
 	pointlist = sorted(pointlist, key=attrgetter('x'))
 	#Loop through the array until we find our current point
+	j = 0
 	for i in pointlist:
 		if i.index == point.index:
-			break
-	return i
+			above = int(pointlist[j+1].x) - int(pointlist[j].x)
+			below = int(pointlist[j].x) - int(pointlist[j-1].x)
+			if above < below:
+				return pointlist[j+1]
+			else:
+				return pointlist[j-1]
+		j+=1
 
 with open('example-input-1.txt', 'rb') as f:
 	reader = csv.reader(f, delimiter=' ')
