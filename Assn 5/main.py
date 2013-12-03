@@ -23,10 +23,12 @@ def find_distance(x1, y1, x2, y2):
 
 def mark_visited(pointlist, point):
 	#Marks a point as visited
+	j = 0
 	for i in pointlist:
 		if i.index == point.index:
-			i = i._replace(visited = 1)
+			pointlist[j] = pointlist[j]._replace(visited = 1)
 			break
+		j+=1
 	return pointlist
 
 def visited(point):
