@@ -20,7 +20,7 @@ Point = namedtuple('Point', 'index x y visited')
 pointlist = [] #create named tuple to store points and their coordinates
 
 def find_distance(point1, point2):
-	return ((point2.x-point1.x)**2 + (point2.y-point1.y)**2)**(.5)
+	return ((int(point2.x)-int(point1.x))**2 + (int(point2.y)-int(point1.y))**2)**(.5)
 
 def visited(point):
 	#A boolean that returns true if point has been visited
@@ -37,6 +37,8 @@ def get_nextclosest_x(pointlist, point):
                 if i.index == point.index:
                         above = int(pointlist[j+1].x) - int(pointlist[j].x)
                         below = int(pointlist[j].x) - int(pointlist[j-1].x)
+                        print "Above = " + above
+                        print "Below = " + below
                         if above < below:
                                 return pointlist[j+1]
                         else:
@@ -67,7 +69,7 @@ def get_nextclosest_y(pointlist, point):
 
 # Parse the input file
 
-with open('example-input-1.txt', 'rb') as f:
+with open('example-input-1-short.txt', 'rb') as f:
 	reader = csv.reader(f, delimiter=' ')
 	for row in reader:
 		pointlist.append(Point(row[0], row[1], row[2], 0));
@@ -81,25 +83,28 @@ visited.append(pointlist[random])
 pointlist.pop(random)
 
 #Visit the rest of the nodes
-while(pointlist):
+while(len(pointlist) > 1):
 	#Choose where to go next based on the last point
 	previous_point = visited[len(visited)-1]
 	closest_x = get_nextclosest_x(pointlist, previous_point)
-	closest_y = get_nextclosest_y(pointlist, previous_point)
-	distance_x = find_distance(previous_point, closest_x)
-	distance_y = find_distance(previous_point, closest_y)
-	if(distance_x < distance_y):
-		next_point = closest_x
-	else:
-		next_point = closest_x
-	visited.append(next_point)
-	pointlist.remove(next_point)
-print visited
+	#closest_y = get_nextclosest_y(pointlist, previous_point)
+	print "closest x: " + closest_x
+        #distance_x = find_distance(previous_point, closest_x) #problem is here
+	#distance_y = find_distance(previous_point, closest_y)
+	#if(distance_x < distance_y):
+	#	next_point = closest_x
+	#else:
+	#	next_point = closest_x
+	#visited.append(next_point)
+	#pointlist.remove(next_point)
+
+# Add the last point to pointlist
+visited.append(pointlist.pop())
 
 #Calculate the tour distance
 total_distance = 0
 for i in range(0, len(visited)-2):
-	total += find_distance(visited[i], visited[i+1])
+	total_distance += find_distance(visited[i], visited[i+1])
 
 #add on the distance from last visited point back to beginning
-total += find_distance(visited[0], visited[len(visited)-1])
+total_distance += find_distance(visited[0], visited[len(visited)-1])
