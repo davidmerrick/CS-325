@@ -14,22 +14,13 @@
 import csv
 from collections import namedtuple
 from operator import attrgetter
+from random import randint
 
 Point = namedtuple('Point', 'index x y visited')
 pointlist = [] #create named tuple to store points and their coordinates
 
-def find_distance(x1, y1, x2, y2):
-	return ((x2-x1)**2 + (y2-y1)**2)**(.5)
-
-def mark_visited(pointlist, point):
-	#Marks a point as visited
-	j = 0
-	for i in pointlist:
-		if i.index == point.index:
-			pointlist[j] = pointlist[j]._replace(visited = 1)
-			break
-		j+=1
-	return pointlist
+def find_distance(point1, point2):
+	return ((point2.x-point1.x)**2 + (point2.y-point1.y)**2)**(.5)
 
 def visited(point):
 	#A boolean that returns true if point has been visited
@@ -38,24 +29,77 @@ def visited(point):
 	return true
 
 def get_nextclosest_x(pointlist, point):
-	#returns a point corresponding to the next closest unvisited X point
-	pointlist = sorted(pointlist, key=attrgetter('x'))
-	#Loop through the array until we find our current point
-	j = 0
-	for i in pointlist:
-		if i.index == point.index:
-			above = int(pointlist[j+1].x) - int(pointlist[j].x)
-			below = int(pointlist[j].x) - int(pointlist[j-1].x)
-			if above < below:
-				return pointlist[j+1]
-			else:
-				return pointlist[j-1]
-		j+=1
+        #returns a point corresponding to the next closest unvisited X point
+        pointlist = sorted(pointlist, key=attrgetter('x'))
+        #Loop through the array until we find our current point
+        j = 0
+        for i in pointlist:
+                if i.index == point.index:
+                        above = int(pointlist[j+1].x) - int(pointlist[j].x)
+                        below = int(pointlist[j].x) - int(pointlist[j-1].x)
+                        if above < below:
+                                return pointlist[j+1]
+                        else:
+                                return pointlist[j-1]
+                j+=1
+
+def get_nextclosest_y(pointlist, point):
+        #returns a point corresponding to the next closest unvisited X point
+        pointlist = sorted(pointlist, key=attrgetter('y'))
+        #Loop through the array until we find our current point
+        j = 0
+        for i in pointlist:
+                if i.index == point.index:
+                        above = int(pointlist[j+1].y) - int(pointlist[j].y)
+                        below = int(pointlist[j].y) - int(pointlist[j-1].y)
+                        if above < below:
+                                return pointlist[j+1]
+                        else:
+                                return pointlist[j-1]
+                j+=1
+
+# How this main loop works:
+# 1. Parses input file into list.
+# 2. Chooses random point to pull from array.
+# 3. Pop this point out of array into separate array of visited nodes.
+# 4. Keep visiting the next closest place while you haven't visited all the nodes.
+# 5. Finally, use the visited array to calculate total tour
+
+# Parse the input file
 
 with open('example-input-1.txt', 'rb') as f:
 	reader = csv.reader(f, delimiter=' ')
 	for row in reader:
 		pointlist.append(Point(row[0], row[1], row[2], 0));
- 
-pointlist = mark_visited(pointlist, pointlist[0])
-print pointlist 
+
+#Initialize visited array
+visited = []
+
+#Visit the first node
+random = randint(0,len(pointlist)-1)
+visited.append(pointlist[random])
+pointlist.pop(random)
+
+#Visit the rest of the nodes
+while(pointlist):
+	#Choose where to go next based on the last point
+	previous_point = visited[len(visited)-1]
+	closest_x = get_nextclosest_x(pointlist, previous_point)
+	closest_y = get_nextclosest_y(pointlist, previous_point)
+	distance_x = find_distance(previous_point, closest_x)
+	distance_y = find_distance(previous_point, closest_y)
+	if(distance_x < distance_y):
+		next_point = closest_x
+	else:
+		next_point = closest_x
+	visited.append(next_point)
+	pointlist.remove(next_point)
+print visited
+
+#Calculate the tour distance
+total_distance = 0
+for i in range(0, len(visited)-2):
+	total += find_distance(visited[i], visited[i+1])
+
+#add on the distance from last visited point back to beginning
+total += find_distance(visited[0], visited[len(visited)-1])
