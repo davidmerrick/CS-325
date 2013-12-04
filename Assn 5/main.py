@@ -93,7 +93,7 @@ while(len(pointlist) > 1):
         visited.append(previous_point)
         closest_x = get_nextclosest_x(pointlist, previous_point)
 	closest_y = get_nextclosest_y(pointlist, previous_point)
-        distance_x = find_distance(previous_point, closest_x) 
+        distance_x = find_distance(previous_point, closest_x)
 	distance_y = find_distance(previous_point, closest_y)
         if(distance_x < distance_y):
 		current_point = closest_x
@@ -104,8 +104,6 @@ while(len(pointlist) > 1):
 # Add the last point to pointlist
 visited.append(pointlist.pop())
 
-print visited
-
 #Calculate the tour distance
 total_distance = 0
 for i in range(0, len(visited)-2):
@@ -113,3 +111,6 @@ for i in range(0, len(visited)-2):
 
 #add on the distance from last visited point back to beginning
 total_distance += find_distance(visited[0], visited[len(visited)-1])
+
+print "Total distance is " + str(total_distance)
+print visited
