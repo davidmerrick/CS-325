@@ -82,11 +82,7 @@ visited = []
 
 #Visit the first node
 random = randint(0,len(pointlist)-1)
-previous_point = pointlist[random]
-visited.append(previous_point)
-closest_x = get_nextclosest_x(pointlist, previous_point)
-current_point = closest_x
-pointlist.remove(previous_point)
+current_point = pointlist[random]
 
 #Visit the rest of the nodes
 while(len(pointlist) > 1):
@@ -101,7 +97,6 @@ while(len(pointlist) > 1):
 	#else:
 	#	next_point = closest_x
 	current_point = closest_x
-        visited.append(current_point)
 	pointlist.remove(previous_point)
 
 # Add the last point to pointlist
