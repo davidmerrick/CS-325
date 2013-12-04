@@ -16,7 +16,7 @@ from collections import namedtuple
 from operator import attrgetter
 from random import randint
 
-Point = namedtuple('Point', 'index x y visited')
+Point = namedtuple('Point', 'index x y')
 pointlist = [] #create named tuple to store points and their coordinates
 
 def find_distance(point1, point2):
@@ -32,7 +32,6 @@ def get_nextclosest_x(pointlist, point):
         #returns a point corresponding to the next closest unvisited X point
         pointlist = sorted(pointlist, key=attrgetter('x'))
         #Loop through the array until we find our current point
-        print "inside get nextclosest_x"
         j = 0
         for i in pointlist:
                 if i.index == point.index:
@@ -40,23 +39,27 @@ def get_nextclosest_x(pointlist, point):
                                 return pointlist[j+1]
                         if j == len(pointlist)-1:
                                 return pointlist[j-1]
-                        above = int(pointlist[j+1].x) - int(pointlist[j].x)
-                        below = int(pointlist[j].x) - int(pointlist[j-1].x)
-                        if abs(above) < abs(below):
+                        above = abs(int(pointlist[j+1].x)) - abs(int(pointlist[j].x))
+                        below = abs(int(pointlist[j].x)) - abs(int(pointlist[j-1].x))
+                        if above < below:
                                 return pointlist[j+1]
                         else:
                                 return pointlist[j-1]
                 j+=1
 
 def get_nextclosest_y(pointlist, point):
-        #returns a point corresponding to the next closest unvisited X point
+#returns a point corresponding to the next closest unvisited X point
         pointlist = sorted(pointlist, key=attrgetter('y'))
         #Loop through the array until we find our current point
         j = 0
         for i in pointlist:
                 if i.index == point.index:
-                        above = int(pointlist[j+1].y) - int(pointlist[j].y)
-                        below = int(pointlist[j].y) - int(pointlist[j-1].y)
+                        if j == 0: 
+                                return pointlist[j+1]
+                        if j == len(pointlist)-1:
+                                return pointlist[j-1]
+                        above = abs(int(pointlist[j+1].y)) - abs(int(pointlist[j].y))
+                        below = abs(int(pointlist[j].y)) - abs(int(pointlist[j-1].y))
                         if above < below:
                                 return pointlist[j+1]
                         else:
@@ -75,7 +78,7 @@ def get_nextclosest_y(pointlist, point):
 with open('example-input-1-short.txt', 'rb') as f:
 	reader = csv.reader(f, delimiter=' ')
 	for row in reader:
-		pointlist.append(Point(row[0], row[1], row[2], 0));
+		pointlist.append(Point(row[0], row[1], row[2]));
 
 #Initialize visited array
 visited = []
@@ -88,15 +91,19 @@ current_point = pointlist[random]
 while(len(pointlist) > 1):
 	previous_point = current_point
         visited.append(previous_point)
+        print "current point is " + str(current_point)
         closest_x = get_nextclosest_x(pointlist, previous_point)
-	#closest_y = get_nextclosest_y(pointlist, previous_point)
-        #distance_x = find_distance(previous_point, closest_x) 
-	#distance_y = find_distance(previous_point, closest_y)
-	#if(distance_x < distance_y):
-	#	next_point = closest_x
-	#else:
-	#	next_point = closest_x
-	current_point = closest_x
+	closest_y = get_nextclosest_y(pointlist, previous_point)
+        distance_x = find_distance(previous_point, closest_x) 
+	distance_y = find_distance(previous_point, closest_y)
+	print "closest x is " + str(closest_x)
+        print "distance to closest x is " + str(distance_x)
+        print "closest y is " + str(closest_y)
+        print "distance to closest y is " + str(distance_y)
+        if(distance_x < distance_y):
+		current_point = closest_x
+	else:
+		current_point = closest_y
 	pointlist.remove(previous_point)
 
 # Add the last point to pointlist
