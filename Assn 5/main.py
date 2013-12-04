@@ -35,13 +35,25 @@ def get_nextclosest_x(pointlist, point):
         j = 0
         for i in pointlist:
                 if i.index == point.index:
+                        if j == 0: 
+                                if(pointlist[j+1] is None):
+                                        print "j == 0 and pointlist[j+1] is None"
+                                return pointlist[j+1]
+                        if j == len(pointlist):
+                                if(pointlist[j-1] is None):
+                                        print "j == len(pointlist) and pointlist[j-1] is None"
+                                return pointlist[j-1]
                         above = int(pointlist[j+1].x) - int(pointlist[j].x)
                         below = int(pointlist[j].x) - int(pointlist[j-1].x)
                         print "Above = " + above
                         print "Below = " + below
                         if above < below:
+                                if(pointlist[j+1] is None):
+                                        print "above < below and pointlist[j+1] is None"
                                 return pointlist[j+1]
                         else:
+                                if(pointlist[j-1] is None):
+                                        print "above <= below and pointlist[j+1] is None"
                                 return pointlist[j-1]
                 j+=1
 
@@ -86,9 +98,16 @@ pointlist.pop(random)
 while(len(pointlist) > 1):
 	#Choose where to go next based on the last point
 	previous_point = visited[len(visited)-1]
-	closest_x = get_nextclosest_x(pointlist, previous_point)
+	if(previous_point is None): #catches it
+                print "previous point is null"
+        closest_x = get_nextclosest_x(pointlist, previous_point)
 	#closest_y = get_nextclosest_y(pointlist, previous_point)
-	print "closest x: " + closest_x
+	if(closest_x is None):
+                print "closest_x is null"
+                break
+        else:
+                print "closest x: " + closest_x
+                break
         #distance_x = find_distance(previous_point, closest_x) #problem is here
 	#distance_y = find_distance(previous_point, closest_y)
 	#if(distance_x < distance_y):
