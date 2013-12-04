@@ -41,7 +41,7 @@ def get_nextclosest_x(pointlist, point):
                                 return pointlist[j-1]
                         above = abs(int(pointlist[j+1].x)) - abs(int(pointlist[j].x))
                         below = abs(int(pointlist[j].x)) - abs(int(pointlist[j-1].x))
-                        if above < below:
+                        if abs(above) < abs(below):
                                 return pointlist[j+1]
                         else:
                                 return pointlist[j-1]
@@ -60,7 +60,7 @@ def get_nextclosest_y(pointlist, point):
                                 return pointlist[j-1]
                         above = abs(int(pointlist[j+1].y)) - abs(int(pointlist[j].y))
                         below = abs(int(pointlist[j].y)) - abs(int(pointlist[j-1].y))
-                        if above < below:
+                        if abs(above) < abs(below):
                                 return pointlist[j+1]
                         else:
                                 return pointlist[j-1]
@@ -91,15 +91,10 @@ current_point = pointlist[random]
 while(len(pointlist) > 1):
 	previous_point = current_point
         visited.append(previous_point)
-        print "current point is " + str(current_point)
         closest_x = get_nextclosest_x(pointlist, previous_point)
 	closest_y = get_nextclosest_y(pointlist, previous_point)
         distance_x = find_distance(previous_point, closest_x) 
 	distance_y = find_distance(previous_point, closest_y)
-	print "closest x is " + str(closest_x)
-        print "distance to closest x is " + str(distance_x)
-        print "closest y is " + str(closest_y)
-        print "distance to closest y is " + str(distance_y)
         if(distance_x < distance_y):
 		current_point = closest_x
 	else:
