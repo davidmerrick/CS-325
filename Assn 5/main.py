@@ -106,7 +106,7 @@ visited.append(pointlist.pop())
 
 #Calculate the tour distance
 total_distance = 0
-for i in range(0, len(visited)-2):
+for i in range(0, len(visited)-1):
 	total_distance += find_distance(visited[i], visited[i+1])
 
 #add on the distance from last visited point back to beginning
