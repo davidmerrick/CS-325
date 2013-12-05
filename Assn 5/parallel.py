@@ -21,7 +21,7 @@
 import csv
 from collections import namedtuple
 from operator import attrgetter
-import random
+from random import randint
 import threading 
 
 Point = namedtuple('Point', 'index x y')
@@ -36,25 +36,6 @@ def visited(point):
         return true
 
 def get_nextclosest_x(pointlist, point):
-<<<<<<< HEAD
-	#returns a point corresponding to the next closest unvisited X point
-	pointlist = sorted(pointlist, key=attrgetter('x'))
-	#Loop through the array until we find our current point
-	j = 0
-	for i in pointlist:
-		if i.index == point.index:
-			if j == 0: 
-				return pointlist[j+1]
-			if j == len(pointlist)-1:
-				return pointlist[j-1]
-			above = abs(int(pointlist[j+1].x)) - abs(int(pointlist[j].x))
-			below = abs(int(pointlist[j].x)) - abs(int(pointlist[j-1].x))
-			if abs(above) < abs(below):
-				return pointlist[j+1]
-			else:
-				return pointlist[j-1]
-			j+=1
-=======
 #returns a point corresponding to the next closest unvisited X point
         pointlist = sorted(pointlist, key=attrgetter('x'))
 #Loop through the array until we find our current point
@@ -72,7 +53,6 @@ def get_nextclosest_x(pointlist, point):
                         else:
                                 return pointlist[j-1]
                 j+=1
->>>>>>> d3aac8866cea59c73d8a3e28ba551014064ad006
 
 def get_nextclosest_y(pointlist, point):
         #returns a point corresponding to the next closest unvisited X point
@@ -94,37 +74,6 @@ def get_nextclosest_y(pointlist, point):
                 j+=1
 
 def nearest_neighbor(pointlist, starting_point):
-<<<<<<< HEAD
-	visited = []
-	current_point = starting_point
-	#Visit the rest of the nodes
-	while(len(pointlist) > 1):
-	        previous_point = current_point
-	        visited.append(previous_point)
-	        closest_x = get_nextclosest_x(pointlist, previous_point)
-	        closest_y = get_nextclosest_y(pointlist, previous_point)
-	        distance_x = find_distance(previous_point, closest_x)
-	        distance_y = find_distance(previous_point, closest_y)
-	        if(distance_x < distance_y):
-	                current_point = closest_x
-	        else:
-	                current_point = closest_y
-	        pointlist.remove(previous_point)
-
-	# Add the last point to pointlist
-	visited.append(pointlist.pop())
-
-	#Calculate the tour distance
-	total_distance = 0
-	for i in range(0, len(visited)-1):
-	        total_distance += find_distance(visited[i], visited[i+1])
-
-	#add on the distance from last visited point back to beginning
-	total_distance += find_distance(visited[0], visited[len(visited)-1])
-
-	print "Total distance is " + str(total_distance)
-	print visited
-=======
         #print "pointlist = " 
         #print pointlist
         #Initialize visited array
@@ -162,7 +111,6 @@ def nearest_neighbor(pointlist, starting_point):
         
         print "visited = "
         print visited
->>>>>>> d3aac8866cea59c73d8a3e28ba551014064ad006
 
 class FuncThread(threading.Thread):
     def __init__(self, target, *args):
@@ -176,25 +124,6 @@ class FuncThread(threading.Thread):
 # Parse the input file
 pointlist = [] #create named tuple to store points and their coordinates
 
-<<<<<<< HEAD
-#Spawn off all the threads
-#Get random points from the list
-for i in range(len(pointlist)/2):
-	# get 40 random queries from the 50
-	starting_points = random.sample(pointlist, len(pointlist)/2);
-
-#Spawn the threads
-threads = []
-j = 0
-for i in range(len(pointlist)/2):
-	thread = FuncThread(nearest_neighbor, pointlist, starting_points[j])
-	thread.start()
-	threads.append(thread)
-	j += 1
-
-for i in range(len(pointlist)/2):
-	threads[i].join()
-=======
 with open('example-input-1-short.txt', 'rb') as f:
         reader = csv.reader(f, delimiter=' ')
         for row in reader:
@@ -215,4 +144,3 @@ thread1.join()
 thread2.join()
 thread3.join()
 thread4.join()
->>>>>>> d3aac8866cea59c73d8a3e28ba551014064ad006
