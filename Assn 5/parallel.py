@@ -27,15 +27,16 @@ import threading
 Point = namedtuple('Point', 'index x y')
 
 def find_distance(point1, point2):
-	return ((int(point2.x)-int(point1.x))**2 + (int(point2.y)-int(point1.y))**2)**(.5)
+        return ((int(point2.x)-int(point1.x))**2 + (int(point2.y)-int(point1.y))**2)**(.5)
 
 def visited(point):
 #A boolean that returns true if point has been visited
-	if point.visited == 0:
-		return false
-	return true
+        if point.visited == 0:
+                return false
+        return true
 
 def get_nextclosest_x(pointlist, point):
+<<<<<<< HEAD
 	#returns a point corresponding to the next closest unvisited X point
 	pointlist = sorted(pointlist, key=attrgetter('x'))
 	#Loop through the array until we find our current point
@@ -53,27 +54,47 @@ def get_nextclosest_x(pointlist, point):
 			else:
 				return pointlist[j-1]
 			j+=1
+=======
+#returns a point corresponding to the next closest unvisited X point
+        pointlist = sorted(pointlist, key=attrgetter('x'))
+#Loop through the array until we find our current point
+        j = 0
+        for i in pointlist:
+                if i.index == point.index:
+                        if j == 0: 
+                                return pointlist[j+1]
+                        if j == len(pointlist)-1:
+                                return pointlist[j-1]
+                        above = abs(int(pointlist[j+1].x)) - abs(int(pointlist[j].x))
+                        below = abs(int(pointlist[j].x)) - abs(int(pointlist[j-1].x))
+                        if abs(above) < abs(below):
+                                return pointlist[j+1]
+                        else:
+                                return pointlist[j-1]
+                j+=1
+>>>>>>> d3aac8866cea59c73d8a3e28ba551014064ad006
 
 def get_nextclosest_y(pointlist, point):
-	#returns a point corresponding to the next closest unvisited X point
-	pointlist = sorted(pointlist, key=attrgetter('y'))
-	#Loop through the array until we find our current point
-	j = 0
-	for i in pointlist:
-		if i.index == point.index:
-			if j == 0: 
-				return pointlist[j+1]
-			if j == len(pointlist)-1:
-				return pointlist[j-1]
-			above = abs(int(pointlist[j+1].y)) - abs(int(pointlist[j].y))
-			below = abs(int(pointlist[j].y)) - abs(int(pointlist[j-1].y))
-			if abs(above) < abs(below):
-				return pointlist[j+1]
-			else:
-				return pointlist[j-1]
-			j+=1
+        #returns a point corresponding to the next closest unvisited X point
+        pointlist = sorted(pointlist, key=attrgetter('y'))
+        #Loop through the array until we find our current point
+        j = 0
+        for i in pointlist:
+                if i.index == point.index:
+                        if j == 0: 
+                                return pointlist[j+1]
+                        if j == len(pointlist)-1:
+                                return pointlist[j-1]
+                        above = abs(int(pointlist[j+1].y)) - abs(int(pointlist[j].y))
+                        below = abs(int(pointlist[j].y)) - abs(int(pointlist[j-1].y))
+                        if abs(above) < abs(below):
+                                return pointlist[j+1]
+                        else:
+                                return pointlist[j-1]
+                j+=1
 
 def nearest_neighbor(pointlist, starting_point):
+<<<<<<< HEAD
 	visited = []
 	current_point = starting_point
 	#Visit the rest of the nodes
@@ -103,6 +124,45 @@ def nearest_neighbor(pointlist, starting_point):
 
 	print "Total distance is " + str(total_distance)
 	print visited
+=======
+        #print "pointlist = " 
+        #print pointlist
+        #Initialize visited array
+        visited = []
+
+        #Visit the first node
+        current_point = starting_point
+
+        #Visit the rest of the nodes
+        while(len(pointlist) > 1):
+                previous_point = current_point
+                visited.append(previous_point)
+                closest_x = get_nextclosest_x(pointlist, previous_point)
+       
+                closest_y = get_nextclosest_y(pointlist, previous_point)
+                distance_x = find_distance(previous_point, closest_x)
+                distance_y = find_distance(previous_point, closest_y)
+                if(distance_x < distance_y):
+                        current_point = closest_x
+                else:
+                        current_point = closest_y
+                pointlist.remove(previous_point)
+
+        # Add the last point to pointlist
+        visited.append(pointlist.pop())
+
+        #Calculate the tour distance
+        total_distance = 0
+        for i in range(0, len(visited)-1):
+                total_distance += find_distance(visited[i], visited[i+1])
+
+        #add on the distance from last visited point back to beginning
+        total_distance += find_distance(visited[0], visited[len(visited)-1])
+        print "Total distance: " + str(total_distance)
+        
+        print "visited = "
+        print visited
+>>>>>>> d3aac8866cea59c73d8a3e28ba551014064ad006
 
 class FuncThread(threading.Thread):
     def __init__(self, target, *args):
@@ -115,11 +175,8 @@ class FuncThread(threading.Thread):
 
 # Parse the input file
 pointlist = [] #create named tuple to store points and their coordinates
-with open('example-input-1-short.txt', 'rb') as f:
-	reader = csv.reader(f, delimiter=' ')
-	for row in reader:
-		pointlist.append(Point(row[0], row[1], row[2]))
 
+<<<<<<< HEAD
 #Spawn off all the threads
 #Get random points from the list
 for i in range(len(pointlist)/2):
@@ -137,3 +194,25 @@ for i in range(len(pointlist)/2):
 
 for i in range(len(pointlist)/2):
 	threads[i].join()
+=======
+with open('example-input-1-short.txt', 'rb') as f:
+        reader = csv.reader(f, delimiter=' ')
+        for row in reader:
+                pointlist.append(Point(row[0], row[1], row[2]))
+        
+
+thread1 = FuncThread(nearest_neighbor, pointlist, pointlist[0])
+thread2 = FuncThread(nearest_neighbor, list(pointlist), pointlist[1])
+thread3 = FuncThread(nearest_neighbor, list(pointlist), pointlist[2])
+thread4 = FuncThread(nearest_neighbor, list(pointlist), pointlist[3])
+
+thread1.start()
+thread2.start()
+thread3.start()
+thread4.start()
+
+thread1.join()
+thread2.join()
+thread3.join()
+thread4.join()
+>>>>>>> d3aac8866cea59c73d8a3e28ba551014064ad006
