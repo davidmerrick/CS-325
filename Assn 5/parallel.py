@@ -129,15 +129,16 @@ with open('example-input-1-short.txt', 'rb') as f:
                 pointlist.append(Point(row[0], row[1], row[2]))
         
 # Generate a list of unique random starting points
-for i in range(len(pointlist)-1):
+n_range = (len(pointlist)-1)/2 # Number of threads we want. Must be less than len(pointlist) - 1
+for i in range(n_range):
     starting_points = random.sample(pointlist, len(pointlist)-1);
 
 #Spawn the threads
 threads = []
-for i in range(len(pointlist)-1):
+for i in range(n_range):
     thread = FuncThread(nearest_neighbor, list(pointlist), starting_points[i])
     thread.start()
     threads.append(thread)
 
-for i in range(len(pointlist)-1):
+for i in range(n_range):
     threads[i].join()
