@@ -96,7 +96,7 @@ def nearest_neighbor(pointlist, starting_point):
                         current_point = closest_x
                 else:
                         current_point = closest_y
-                pathstring += current_point.index
+                pathstring += " " + current_point.index
                 pointlist.remove(previous_point)
 
         # Add the last point to pointlist
@@ -112,10 +112,8 @@ def nearest_neighbor(pointlist, starting_point):
         #add on the distance from last visited point back to beginning
         total_distance += find_distance(visited[0], visited[len(visited)-1])
 
+        #append results to array
         result_array.append(Path(total_distance, pathstring))
-        print "Total distance: " + str(total_distance)
-        
-        print "pathstring = " + pathstring
 
 class FuncThread(threading.Thread):
     def __init__(self, target, *args):
@@ -148,5 +146,7 @@ for i in range(n_range):
 for i in range(n_range):
     threads[i].join()
 
-print "result array:"
-print result_array
+result_array = sorted(result_array, key=attrgetter('length'))
+
+print "shortest path:"
+print result_array[0]
