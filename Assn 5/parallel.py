@@ -21,7 +21,7 @@
 import csv
 from collections import namedtuple
 from operator import attrgetter
-from random import randint
+import random
 import threading 
 
 Point = namedtuple('Point', 'index x y')
@@ -123,24 +123,21 @@ class FuncThread(threading.Thread):
 
 # Parse the input file
 pointlist = [] #create named tuple to store points and their coordinates
-
 with open('example-input-1-short.txt', 'rb') as f:
         reader = csv.reader(f, delimiter=' ')
         for row in reader:
                 pointlist.append(Point(row[0], row[1], row[2]))
         
+# Generate a list of unique random starting points
+for i in range(len(pointlist)-1):
+    starting_points = random.sample(pointlist, len(pointlist)-1);
 
-thread1 = FuncThread(nearest_neighbor, pointlist, pointlist[0])
-thread2 = FuncThread(nearest_neighbor, list(pointlist), pointlist[1])
-thread3 = FuncThread(nearest_neighbor, list(pointlist), pointlist[2])
-thread4 = FuncThread(nearest_neighbor, list(pointlist), pointlist[3])
+#Spawn the threads
+threads = []
+for i in range(len(pointlist)-1):
+    thread = FuncThread(nearest_neighbor, list(pointlist), starting_points[i])
+    thread.start()
+    threads.append(thread)
 
-thread1.start()
-thread2.start()
-thread3.start()
-thread4.start()
-
-thread1.join()
-thread2.join()
-thread3.join()
-thread4.join()
+for i in range(len(pointlist)-1):
+    threads[i].join()
