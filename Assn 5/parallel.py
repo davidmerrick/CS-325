@@ -147,6 +147,7 @@ f.close()
         
 # Generate a list of unique random starting points
 n_range = (len(pointlist)-1)/2 # Number of threads we want. Must be less than len(pointlist) - 1
+
 for i in range(n_range):
     starting_points = random.sample(pointlist, len(pointlist)-1);
 
@@ -168,7 +169,7 @@ print result_array[0]
 
 #write results to output file
 output = open('output.txt','w')
-output.write(str(result_array[0].length)+'\n')
+output.write(str(int(result_array[0].length))+'\n')
 
 for i in result_array[0].points.strip().split():
 	#output.write(linecache.getline(inputfile, int(i)+1))
