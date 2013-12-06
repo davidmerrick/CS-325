@@ -23,13 +23,16 @@ from collections import namedtuple
 from operator import attrgetter
 import random
 import threading 
+import linecache
 
 Point = namedtuple('Point', 'index x y')
 Path = namedtuple('Path', 'length points')
 result_array = []
 
 def find_distance(point1, point2):
-        return ((int(point2.x)-int(point1.x))**2 + (int(point2.y)-int(point1.y))**2)**(.5)
+        distance = ((int(point2.x)-int(point1.x))**2 + (int(point2.y)-int(point1.y))**2)**(.5)
+	#round to nearest integer
+	return round(distance)
 
 def visited(point):
 #A boolean that returns true if point has been visited
@@ -124,9 +127,13 @@ class FuncThread(threading.Thread):
     def run(self):
         self._target(*self._args)
 
+
+
 # Parse the input file
 pointlist = [] #create named tuple to store points and their coordinates
-with open('example-input-1.txt', 'rb') as f:
+inputfile = 'example-input-1.txt'
+
+with open(inputfile, 'rb') as f:
         reader = csv.reader(f, delimiter=' ')
         for row in reader:
                 pointlist.append(Point(row[0], row[1], row[2]))
@@ -150,3 +157,14 @@ result_array = sorted(result_array, key=attrgetter('length'))
 
 print "shortest path:"
 print result_array[0]
+
+
+#write results to output file
+output = open('output.txt','w')
+output.write(str(result_array[0].length)+'\n')
+
+for i in result_array[0].points.strip().split():
+	#print linecache.getline(inputfile, int(i)+1)
+	output.write(linecache.getline(inputfile, int(i)+1))
+
+output.close()
