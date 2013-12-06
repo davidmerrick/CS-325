@@ -59,6 +59,16 @@ def get_nextclosest_x(pointlist, point):
                                 return pointlist[j-1]
                 j+=1
 
+def calculate_distance(visited):
+        #Given a visited array, returns the total distance traveled
+        total_distance = 0
+        for i in range(0, len(visited)-1):
+                total_distance += find_distance(visited[i], visited[i+1])
+
+        #add on the distance from last visited point back to beginning
+        last_point = visited[len(visited)-1]
+        total_distance += find_distance(visited[0], last_point)
+        return total_distance
 
 def get_nextclosest_y(pointlist, point):
         #returns a point corresponding to the next closest unvisited X point
@@ -107,14 +117,7 @@ def nearest_neighbor(pointlist, starting_point):
         last_point = pointlist.pop()
         visited.append(last_point)
 
-        #to do: keep track of total distance within the loop that calculates the next point.
-        #Calculate the tour distance
-        total_distance = 0
-        for i in range(0, len(visited)-1):
-                total_distance += find_distance(visited[i], visited[i+1])
-
-        #add on the distance from last visited point back to beginning
-        total_distance += find_distance(visited[0], last_point)
+        total_distance = calculate_distance(visited)
 
         #append results to array
         result_array.append(Path(total_distance, pathstring))
@@ -163,6 +166,7 @@ result_array = sorted(result_array, key=attrgetter('length'))
 
 print result_array[0]
 
+
 #write results to output file
 output = open('output.txt','w')
 output.write(str(int(result_array[0].length))+'\n')
@@ -172,5 +176,18 @@ for i in result_array[0].points.strip().split():
 
 	#actually just need city identifier #
 	output.write(i+'\n')
+    #build a new result array
 
 output.close()
+
+#build a new result array with points
+new_result_array = []
+for i in result_array[0].points.strip().split():
+        #output.write(linecache.getline(inputfile, int(i)+1))
+        for j in pointlist:
+            if j.index == i:
+                new_result_array.append(j)
+                break
+
+print "new result array"
+print new_result_array
