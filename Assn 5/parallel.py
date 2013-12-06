@@ -41,9 +41,9 @@ def visited(point):
         return true
 
 def get_nextclosest_x(pointlist, point):
-#returns a point corresponding to the next closest unvisited X point
+    #returns a point corresponding to the next closest unvisited X point
         pointlist = sorted(pointlist, key=attrgetter('x'))
-#Loop through the array until we find our current point
+    #Loop through the array until we find our current point
         j = 0
         for i in pointlist:
                 if i.index == point.index:
@@ -58,6 +58,7 @@ def get_nextclosest_x(pointlist, point):
                         else:
                                 return pointlist[j-1]
                 j+=1
+
 
 def get_nextclosest_y(pointlist, point):
         #returns a point corresponding to the next closest unvisited X point
@@ -113,7 +114,7 @@ def nearest_neighbor(pointlist, starting_point):
                 total_distance += find_distance(visited[i], visited[i+1])
 
         #add on the distance from last visited point back to beginning
-        total_distance += find_distance(visited[0], visited[len(visited)-1])
+        total_distance += find_distance(visited[0], last_point)
 
         #append results to array
         result_array.append(Path(total_distance, pathstring))
@@ -127,11 +128,9 @@ class FuncThread(threading.Thread):
     def run(self):
         self._target(*self._args)
 
-
-
 # Parse the input file
 pointlist = [] #create named tuple to store points and their coordinates
-inputfile = 'example-input-1.txt'
+inputfile = 'example-input-1-short.txt'
 
 #with open(inputfile, 'rb') as f:
 #        reader = csv.reader(f, delimiter=' ')
@@ -144,28 +143,25 @@ for row in f:
 	pointlist.append(Point(row[0], row[1], row[2]))
 f.close()
 
-        
 # Generate a list of unique random starting points
-n_range = (len(pointlist)-1)/2 # Number of threads we want. Must be less than len(pointlist) - 1
+num_threads = 1 # Number of threads we want. Must be less than len(pointlist) - 1
 
-for i in range(n_range):
+for i in range(num_threads):
     starting_points = random.sample(pointlist, len(pointlist)-1);
 
 #Spawn the threads
 threads = []
-for i in range(n_range):
+for i in range(num_threads):
     thread = FuncThread(nearest_neighbor, list(pointlist), starting_points[i])
     thread.start()
     threads.append(thread)
 
-for i in range(n_range):
+for i in range(num_threads):
     threads[i].join()
 
 result_array = sorted(result_array, key=attrgetter('length'))
 
-print "shortest path:"
 print result_array[0]
-
 
 #write results to output file
 output = open('output.txt','w')
