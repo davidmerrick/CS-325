@@ -183,7 +183,6 @@ output.close()
 #build a new result array with points
 new_result_array = []
 for i in result_array[0].points.strip().split():
-        #output.write(linecache.getline(inputfile, int(i)+1))
         for j in pointlist:
             if j.index == i:
                 new_result_array.append(j)
@@ -191,3 +190,15 @@ for i in result_array[0].points.strip().split():
 
 print "new result array"
 print new_result_array
+
+
+
+for i in range(1, len(new_result_array)-2):
+	for j in range(i+1, len(new_result_array)-1):
+		if (find_distance(new_result_array[i], new_result_array[i-1]) + find_distance(new_result_array[j+1], new_result_array[j])) \
+			    > (find_distance(new_result_array[i], new_result_array[j+1]) + find_distance(new_result_array[i-1], new_result_array[j])):
+			#swap
+			
+			temp = new_result_array[i]
+			new_result_array[i] = new_result_array[j+1]
+			new_result_array[j+1] = temp
