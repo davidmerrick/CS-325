@@ -131,7 +131,7 @@ class FuncThread(threading.Thread):
 
 # Parse the input file
 pointlist = [] #create named tuple to store points and their coordinates
-inputfile = 'example-input-2.txt'
+inputfile = 'example-input-1.txt'
 
 #with open(inputfile, 'rb') as f:
 #        reader = csv.reader(f, delimiter=' ')
