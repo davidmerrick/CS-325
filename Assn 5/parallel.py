@@ -25,7 +25,8 @@ import random
 import threading 
 
 Point = namedtuple('Point', 'index x y')
-Path = namedtuple('length', 'points')
+Path = namedtuple('Path', 'length points')
+result_array = []
 
 def find_distance(point1, point2):
         return ((int(point2.x)-int(point1.x))**2 + (int(point2.y)-int(point1.y))**2)**(.5)
@@ -75,9 +76,7 @@ def get_nextclosest_y(pointlist, point):
                 j+=1
 
 def nearest_neighbor(pointlist, starting_point):
-        #print "pointlist = " 
-        #print pointlist
-        #Initialize visited array
+        global result_array
         visited = []
 
         pathstring = "" + starting_point.index
@@ -112,6 +111,8 @@ def nearest_neighbor(pointlist, starting_point):
 
         #add on the distance from last visited point back to beginning
         total_distance += find_distance(visited[0], visited[len(visited)-1])
+
+        result_array.append(Path(total_distance, pathstring))
         print "Total distance: " + str(total_distance)
         
         print "pathstring = " + pathstring
@@ -127,7 +128,7 @@ class FuncThread(threading.Thread):
 
 # Parse the input file
 pointlist = [] #create named tuple to store points and their coordinates
-with open('example-input-1-short.txt', 'rb') as f:
+with open('example-input-1.txt', 'rb') as f:
         reader = csv.reader(f, delimiter=' ')
         for row in reader:
                 pointlist.append(Point(row[0], row[1], row[2]))
@@ -146,3 +147,6 @@ for i in range(n_range):
 
 for i in range(n_range):
     threads[i].join()
+
+print "result array:"
+print result_array
