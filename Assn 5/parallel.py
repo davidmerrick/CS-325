@@ -131,12 +131,19 @@ class FuncThread(threading.Thread):
 
 # Parse the input file
 pointlist = [] #create named tuple to store points and their coordinates
-inputfile = 'example-input-1.txt'
+inputfile = 'example-input-2.txt'
 
-with open(inputfile, 'rb') as f:
-        reader = csv.reader(f, delimiter=' ')
-        for row in reader:
-                pointlist.append(Point(row[0], row[1], row[2]))
+#with open(inputfile, 'rb') as f:
+#        reader = csv.reader(f, delimiter=' ')
+#        for row in reader:
+#                pointlist.append(Point(row[0], row[1], row[2]))
+
+f = open(inputfile)
+for row in f:
+	row = row.strip().split()
+	pointlist.append(Point(row[0], row[1], row[2]))
+f.close()
+
         
 # Generate a list of unique random starting points
 n_range = (len(pointlist)-1)/2 # Number of threads we want. Must be less than len(pointlist) - 1
@@ -164,7 +171,9 @@ output = open('output.txt','w')
 output.write(str(result_array[0].length)+'\n')
 
 for i in result_array[0].points.strip().split():
-	#print linecache.getline(inputfile, int(i)+1)
-	output.write(linecache.getline(inputfile, int(i)+1))
+	#output.write(linecache.getline(inputfile, int(i)+1))
+
+	#actually just need city identifier #
+	output.write(i+'\n')
 
 output.close()
