@@ -25,6 +25,7 @@ import random
 import threading 
 
 Point = namedtuple('Point', 'index x y')
+Path = namedtuple('length', 'points')
 
 def find_distance(point1, point2):
         return ((int(point2.x)-int(point1.x))**2 + (int(point2.y)-int(point1.y))**2)**(.5)
@@ -79,6 +80,8 @@ def nearest_neighbor(pointlist, starting_point):
         #Initialize visited array
         visited = []
 
+        pathstring = "" + starting_point.index
+
         #Visit the first node
         current_point = starting_point
 
@@ -87,7 +90,6 @@ def nearest_neighbor(pointlist, starting_point):
                 previous_point = current_point
                 visited.append(previous_point)
                 closest_x = get_nextclosest_x(pointlist, previous_point)
-       
                 closest_y = get_nextclosest_y(pointlist, previous_point)
                 distance_x = find_distance(previous_point, closest_x)
                 distance_y = find_distance(previous_point, closest_y)
@@ -95,11 +97,14 @@ def nearest_neighbor(pointlist, starting_point):
                         current_point = closest_x
                 else:
                         current_point = closest_y
+                pathstring += current_point.index
                 pointlist.remove(previous_point)
 
         # Add the last point to pointlist
-        visited.append(pointlist.pop())
+        last_point = pointlist.pop()
+        visited.append(last_point)
 
+        #to do: keep track of total distance within the loop that calculates the next point.
         #Calculate the tour distance
         total_distance = 0
         for i in range(0, len(visited)-1):
@@ -109,8 +114,7 @@ def nearest_neighbor(pointlist, starting_point):
         total_distance += find_distance(visited[0], visited[len(visited)-1])
         print "Total distance: " + str(total_distance)
         
-        print "visited = "
-        print visited
+        print "pathstring = " + pathstring
 
 class FuncThread(threading.Thread):
     def __init__(self, target, *args):
